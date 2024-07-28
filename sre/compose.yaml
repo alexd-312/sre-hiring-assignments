@@ -1,0 +1,19 @@
+services:
+  dummy_app: 
+    container_name: dummyApp
+    build:
+      context: ./dummy-pdf-or-png
+    ports:
+      - '3000:3000'
+  my_app: 
+    container_name: myApp
+    environment: 
+      - GO_APP_ADDRESS=dummy_app:3000
+      - MYAPP_TMP_FOLDER=tmp
+    build:
+      context: ./myapp
+      target: run-app
+    ports:
+      - '8080:8080'
+    depends_on:
+      - dummy_app
